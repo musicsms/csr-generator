@@ -21,7 +21,7 @@ python app.py
 Open the browser and navigate to `http://127.0.0.1:5000/`
 
 To use on production, you can deploy the app on a server and access it via the server's IP address or domain name.
-On production, recommend to use gunicorn to run the app:
+Recommend to use gunicorn to run the app:
 ```bash
 gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
