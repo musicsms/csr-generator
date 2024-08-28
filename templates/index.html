@@ -1,10 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate CSR</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
 </head>
 <body>
-$END$
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title text-center">Generate CSR</h1>
+                <form action="/generate_csr" method="post">
+                    <div class="form-group">
+                        <label for="common_name">Common Name:</label>
+                        <input type="text" class="form-control" id="common_name" name="common_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="alternative_names">Alternative Names (comma-separated):</label>
+                        <input type="text" class="form-control" id="alternative_names" name="alternative_names">
+                    </div>
+                    <div class="form-group">
+                        <label for="key_type">Key Type:</label>
+                        <select class="form-control" id="key_type" name="key_type" required>
+                            <option value="rsa">RSA</option>
+                            <option value="ecdsa">ECDSA</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="key_size">Key Size:</label>
+                        <select class="form-control" id="key_size" name="key_size" required>
+                            <option value="2048">2048</option>
+                            <option value="4096">4096</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="passphrase_option">Passphrase Option:</label>
+                        <select class="form-control" id="passphrase_option" name="passphrase_option" required>
+                            <option value="manual">Manual</option>
+                            <option value="random">Random</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="passphrase_length_group" style="display: none;">
+                        <label for="passphrase_length">Passphrase Length:</label>
+                        <input type="number" class="form-control" id="passphrase_length" name="passphrase_length" min="8">
+                    </div>
+                    <div class="form-group" id="passphrase_group">
+                        <label for="passphrase">Passphrase:</label>
+                        <input type="password" class="form-control" id="passphrase" name="passphrase" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Generate CSR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('key_type').addEventListener('change', function() {
+            if (this.value === 'ecdsa') {
+                document.getElementById('key_size').disabled = true;
+            } else {
+                document.getElementById('key_size').disabled = false;
+            }
+        });
+
+        document.getElementById('passphrase_option').addEventListener('change', function() {
+            if (this.value === 'random') {
+                document.getElementById('passphrase_group').style.display = 'none';
+                document.getElementById('passphrase_length_group').style.display = 'block';
+                document.getElementById('passphrase').removeAttribute('required');
+            } else {
+                document.getElementById('passphrase_group').style.display = 'block';
+                document.getElementById('passphrase_length_group').style.display = 'none';
+                document.getElementById('passphrase').setAttribute('required', 'required');
+            }
+        });
+    </script>
+    <footer class="text-center mt-5">
+        © <script>document.write(new Date().getFullYear());</script>, musicsms. All rights reserved.
+    </footer>
 </body>
 </html>
