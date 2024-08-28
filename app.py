@@ -15,10 +15,12 @@ def index():
 def generate_csr():
     common_name = request.form['common_name']
     alternative_names = request.form['alternative_names']
-    key_size = request.form['key_size']
     key_type = request.form['key_type']
+    if key_type == 'ecdsa':
+        key_size = None  # ECDSA key size is not required
+    else:
+        key_size = request.form['key_size']
     passphrase_option = request.form['passphrase_option']
-
     if passphrase_option == 'random':
         passphrase_length = int(request.form['passphrase_length'])
         passphrase = CertCSR.generate_passphrase(passphrase_length)
