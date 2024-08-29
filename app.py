@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from modules.certificate import CertCSR
+from modules.utils import generate_passphrase
 import os
 
 app = Flask(__name__)
@@ -22,7 +23,7 @@ def generate_csr():
     passphrase_option = request.form['passphrase_option']
     if passphrase_option == 'random':
         passphrase_length = int(request.form['passphrase_length'])
-        passphrase = CertCSR.generate_passphrase(passphrase_length)
+        passphrase = generate_passphrase(passphrase_length)
     else:
         passphrase = request.form['passphrase']
 
