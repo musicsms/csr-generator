@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 from modules.certificate import CertCSR
 import os
 
-# © 2024, musicsms. All rights reserved.
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Secret key for session management
 

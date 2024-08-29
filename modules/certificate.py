@@ -10,7 +10,6 @@ import pytz
 
 vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
 
-# © 2024, musicsms. All rights reserved.
 
 class CertCSR(object):
     # Define CSR attributes
