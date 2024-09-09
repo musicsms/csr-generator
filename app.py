@@ -49,7 +49,7 @@ def generate_csr():
     session['passphrase'] = passphrase
 
     # Redirect to the /generate_csr page (GET request) to avoid form re-submission
-    return redirect(url_for('result'))
+    return redirect(url_for('generate_csr_result'))
 
 
 @app.route('/result', methods=['GET'])
