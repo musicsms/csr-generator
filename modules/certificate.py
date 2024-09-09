@@ -1,14 +1,9 @@
-import string
-import secrets
 import ipaddress
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import rsa, ec
 from cryptography.hazmat.backends import default_backend
 from cryptography.x509.oid import NameOID, ExtendedKeyUsageOID
-import pytz
-
-vietnam_tz = pytz.timezone('Asia/Ho_Chi_Minh')
 
 
 class CertCSR(object):
@@ -46,13 +41,6 @@ class CertCSR(object):
             return True
         except ValueError:
             return False
-
-    @staticmethod
-    def generate_passphrase(length):
-        exclude_char = r"\'\`\"\|\;\\\{\}\[\]\(\)\/"
-        characters = "".join(set(string.ascii_letters + string.digits + string.punctuation) - set(exclude_char))
-        pass_phrase = ''.join(secrets.choice(characters) for _ in range(length))
-        return pass_phrase
 
     def generate_csr(self):
         if self.is_valid_ip(self.common_name):
