@@ -3,16 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate CSR</title>
+    <title>Generate Keys</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="shortcut icon" href="/static/img/favicon.ico" />
 </head>
 <body>
     <div class="container mt-5">
-        <div class="card">
-            <div class="card-body">
-                <h1 class="card-title text-center">Generate CSR</h1>
-                <form action="/generate_csr" method="post">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="csr-tab" data-toggle="tab" href="#csr" role="tab" aria-controls="csr" aria-selected="true">Generate CSR</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="ssh-tab" data-toggle="tab" href="#ssh" role="tab" aria-controls="ssh" aria-selected="false">Generate SSH Key Pair</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="csr" role="tabpanel" aria-labelledby="csr-tab">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Generate CSR</h1>
+                        <form action="/generate_csr" method="post">
                     <div class="form-group">
                         <label for="common_name">Common Name:</label>
                         <input type="text" class="form-control" id="common_name" name="common_name" required>
@@ -52,30 +62,39 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Generate CSR</button>
                 </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="ssh" role="tabpanel" aria-labelledby="ssh-tab">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Generate SSH Key Pair</h1>
+                        <form action="/generate_ssh" method="post">
+                            <div class="form-group">
+                                <label for="ssh_key_type">Key Type:</label>
+                                <select class="form-control" id="ssh_key_type" name="ssh_key_type" required>
+                                    <option value="rsa">RSA</option>
+                                    <option value="ecdsa">ECDSA</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ssh_key_size">Key Size:</label>
+                                <select class="form-control" id="ssh_key_size" name="ssh_key_size" required>
+                                    <option value="2048">2048</option>
+                                    <option value="4096">4096</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Generate SSH Key Pair</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById('key_type').addEventListener('change', function() {
-            if (this.value === 'ecdsa') {
-                document.getElementById('key_size').disabled = true;
-            } else {
-                document.getElementById('key_size').disabled = false;
-            }
-        });
-
-        document.getElementById('passphrase_option').addEventListener('change', function() {
-            if (this.value === 'random') {
-                document.getElementById('passphrase_group').style.display = 'none';
-                document.getElementById('passphrase_length_group').style.display = 'block';
-                document.getElementById('passphrase').removeAttribute('required');
-            } else {
-                document.getElementById('passphrase_group').style.display = 'block';
-                document.getElementById('passphrase_length_group').style.display = 'none';
-                document.getElementById('passphrase').setAttribute('required', 'required');
-            }
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/static/js/script.js"></script>
     <footer class="text-center mt-5">
         <script>document.write(new Date().getFullYear());</script> - musicsms
     </footer>

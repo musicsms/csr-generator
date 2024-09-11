@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from modules.certificate import CertCSR
 from modules.utils import generate_passphrase
+from modules.ssh_keypair import generate_ssh_keypair
 import os
 
 app = Flask(__name__)
@@ -9,10 +10,10 @@ app.secret_key = os.urandom(24)  # Secret key for session management
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index2.html')
 
 
-@app.route('/submit', methods=['POST'])
+@app.route('/generate_csr', methods=['POST'])
 def generate_csr():
     # Collect data from the form
     common_name = request.form['common_name']
@@ -52,16 +53,43 @@ def generate_csr():
     return redirect(url_for('generate_csr_result'))
 
 
-@app.route('/result', methods=['GET'])
+@app.route('/csr_result', methods=['GET'])
 def generate_csr_result():
     # Check if CSR data is in the session
     if 'csr' in session and 'private_key' in session and 'passphrase' in session:
         csr = session['csr']
         private_key = session['private_key']
         passphrase = session['passphrase']
-        return render_template('result.html', csr=csr, private_key=private_key, passphrase=passphrase)
+        return render_template('csr_result.html', csr=csr, private_key=private_key, passphrase=passphrase)
 
     # If session data is missing, redirect back to the main page
+    return redirect(url_for('index'))
+
+
+@app.route('/generate_ssh', methods=['POST'])
+def generate_ssh():
+    key_type = request.form['ssh_key_type']
+    # Handle key size based on the key type
+    if key_type == 'ecdsa':
+        key_size = None  # ECDSA key size is not required
+    else:
+        key_size = int(request.form['ssh_key_size'])
+
+    private_key, public_key = generate_ssh_keypair(key_type, key_size)
+
+    session['private_key'] = private_key
+    session['public_key'] = public_key
+
+    return redirect(url_for('generate_ssh_result'))
+
+
+@app.route('/ssh_result', methods=['GET'])
+def generate_ssh_result():
+    if 'private_key' in session and 'public_key' in session:
+        private_key = session['private_key']
+        public_key = session['public_key']
+        return render_template('ssh_result.html', private_key=private_key, public_key=public_key)
+
     return redirect(url_for('index'))
 
 
