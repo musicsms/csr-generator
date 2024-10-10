@@ -27,6 +27,10 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
 Other options is running the app as container with docker/podman. You should build the image from Dockerfile first.
 
+## Public Key
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFHCe3+8l3Csge+xnhL2zq2G8HEbQX/HCbA8NsCB8kb3
+
 ## License
 
 This project is licensed under the MIT License.
